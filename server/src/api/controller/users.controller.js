@@ -1,24 +1,15 @@
-import UsersDAO from '../dao/users.DAO.js'
+import User from '../models/user.model.js'
 
 const apiGetUsers = async (req, res, next) => {
   try {
-    const response = await UsersDAO.getUsers()
     res.status(400).json(response)
   } catch (error) {
     res.status(500).json({ error })
   }
 }
-const apiPostUser = async (req, res, next) => {
-  try {
-    const response = await UsersDAO.getUsers()
-    res.status(400).json(response)
-  } catch (error) {
-    res.status(500).json({ error })
-  }
-}
+
 const apiUpdateUser = async (req, res, next) => {
   try {
-    const response = await UsersDAO.getUsers()
     res.status(400).json(response)
   } catch (error) {
     res.status(500).json({ error })
@@ -27,7 +18,6 @@ const apiUpdateUser = async (req, res, next) => {
 
 const apiDeleteUser = async (req, res, next) => {
   try {
-    const response = await UsersDAO.getUsers()
     res.status(400).json(response)
   } catch (error) {
     res.status(500).json({ error })
@@ -36,7 +26,6 @@ const apiDeleteUser = async (req, res, next) => {
 
 const controller = {
   apiGetUsers,
-  apiPostUser,
   apiUpdateUser,
   apiDeleteUser,
 }
