@@ -28,9 +28,9 @@ const apiUpdateUser = async (req, res) => {
       { new: true }
     )
 
-    const { username: name, email, admin } = updatedUser._doc
+    const { _id: id, username: name, email } = updatedUser._doc
     res.status(200).json({
-      id: updatedUser._id,
+      id,
       username: name,
       email,
     })
