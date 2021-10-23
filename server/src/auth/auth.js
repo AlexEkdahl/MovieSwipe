@@ -1,14 +1,15 @@
 import User from '../api/models/user.model.js'
-import { encrypt, decrypt } from '../util/crypt.js'
+import { encrypt, decrypt, generateToken } from '../util/crypt.js'
+import { validateEmail } from '../util/validate.js'
 
 const apiRegisterUser = async (req, res) => {
-  const { username, password, email, admin } = req.body
-
-  if (!username || !password || !email) {
-    res.status(400).json({ message: 'Missing parameters', success: false })
-  }
-
   try {
+    const { username, password, email, admin } = req.body
+
+    if (!username || !password || !email || !validateEmail(email)) {
+      return res.status(400).json({ message: 'Missing parameters' })
+    }
+
     const newUser = new User({
       username,
       password: encrypt(password),
@@ -16,40 +17,49 @@ const apiRegisterUser = async (req, res) => {
       admin,
     })
     const savedUser = await newUser.save()
-    res.status(201).json(savedUser)
+
+    //dto
+    const { username: name, email: mail } = savedUser._doc
+
+    res.status(201).json({ id: savedUser._id, username: name, email: mail })
   } catch (error) {
-    res.status(500).json({ msg: 'Error' })
+    console.error(error)
+    res.status(500).json({ message: 'Something went wrong on server' })
   }
 }
 
 const apiLoginUser = async (req, res) => {
   const { username, password } = req.body
   if (!username || !password) {
-    return res
-      .status(400)
-      .json({ message: 'Missing parameters', success: false })
+    return res.status(400).json({ message: 'Missing parameters' })
   }
 
   try {
     const user = await User.findOne({ username })
     if (!user) {
-      return res
-        .status(401)
-        .json({ message: 'Bad credentials', success: false })
+      return res.status(401).json({ message: 'Bad credentials' })
     }
 
+    //decrypt
     const decryptedPassword = decrypt(user.password)
     if (decryptedPassword !== password) {
-      return res
-        .status(401)
-        .json({ message: 'Bad credentials', success: false })
+      return res.status(401).json({ message: 'Bad credentials' })
     }
 
-    const { id, username: name, admin, email } = user._doc
-    res.status(200).json({ id, username: name, admin, email })
+    //dto
+    const { username: name, email, admin } = user._doc
+    const id = user._id
+    const accessToken = generateToken(id, admin)
+
+    res.status(200).json({
+      id,
+      username: name,
+      email,
+      token: accessToken,
+    })
   } catch (error) {
     console.error(error)
-    res.status(500).json({ msg: 'Error' })
+    res.status(500).json({ message: 'Something went wrong on server' })
   }
 }
 
