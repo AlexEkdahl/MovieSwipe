@@ -19,9 +19,9 @@ const apiRegisterUser = async (req, res) => {
     const savedUser = await newUser.save()
 
     //dto
-    const { username: name, email: mail } = savedUser._doc
+    const { _id: id, username: name, email: mail } = savedUser._doc
 
-    res.status(201).json({ id: savedUser._id, username: name, email: mail })
+    res.status(201).json({ id, username: name, email: mail })
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Something went wrong on server' })
@@ -47,8 +47,7 @@ const apiLoginUser = async (req, res) => {
     }
 
     //dto
-    const { username: name, email, admin } = user._doc
-    const id = user._id
+    const { _id: id, username: name, email, admin } = user._doc
     const accessToken = generateToken(id, admin)
 
     res.status(200).json({

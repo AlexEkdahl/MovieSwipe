@@ -11,12 +11,13 @@ const apiGetUsers = async (req, res) => {
 
 const apiUpdateUser = async (req, res) => {
   const id = req.params.id
-  const { password, email } = req.body
+  const { password, email, admin } = req.body
   const params = {}
-  if (password) {
-    params.password = encrypt(password)
-  }
+
+  //populate params
+  if (password) params.password = encrypt(password)
   if (email) params.email = email
+  if (req.user.admin && admin) params.admin = admin
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
