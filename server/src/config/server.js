@@ -3,16 +3,17 @@ import morgan from 'morgan'
 import cors from 'cors'
 import users from '../api/routes/users.routes.js'
 
-const server = express()
+const app = express()
 
 //middleware
-server.use(cors())
-server.use(express.json())
-server.use(morgan('dev'))
+app.use(cors())
+app.use(express.json())
+app.use(morgan('dev'))
 
-server.use('/api/v1/', users)
-server.use('*', (req, res, next) =>
+//routes
+app.use('/api/v1/users', users)
+app.use('*', (req, res, next) =>
   res.status(404).json({ error: 'page not found' })
 )
 
-export default server
+export default app
