@@ -27,4 +27,14 @@ const verifyAndAuthorize = (req, res, next) => {
   })
 }
 
-export { verify, verifyAndAuthorize as auth }
+const verifyAndAdminAuthorize = (req, res, next) => {
+  verify(req, res, () => {
+    if (req.user.admin) {
+      next()
+    } else {
+      res.status(403).json({ message: 'Unauthorized' })
+    }
+  })
+}
+
+export { verify, verifyAndAuthorize as auth, verifyAndAdminAuthorize as admin }

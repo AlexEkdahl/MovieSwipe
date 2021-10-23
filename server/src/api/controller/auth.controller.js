@@ -1,6 +1,6 @@
-import User from '../api/models/user.model.js'
-import { encrypt, decrypt, generateToken } from '../util/crypt.js'
-import { validateEmail } from '../util/validate.js'
+import User from '../models/user.model.js'
+import { encrypt, decrypt, generateToken } from '../../util/crypt.js'
+import { validateEmail } from '../../util/validate.js'
 
 const apiRegisterUser = async (req, res) => {
   try {
