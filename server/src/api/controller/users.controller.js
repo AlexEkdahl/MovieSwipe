@@ -3,7 +3,7 @@ import { encrypt } from '../../util/crypt.js'
 
 const apiGetUsers = async (req, res) => {
   try {
-    res.status(400).json(response)
+    res.status(200).json({ users: [] })
   } catch (error) {
     res.status(500).json({ error })
   }
@@ -28,9 +28,9 @@ const apiUpdateUser = async (req, res) => {
       { new: true }
     )
 
-    const { _id: id, username: name, email } = updatedUser._doc
+    const { _id, username: name, email } = updatedUser._doc
     res.status(200).json({
-      id,
+      id: _id,
       username: name,
       email,
     })
@@ -42,7 +42,7 @@ const apiUpdateUser = async (req, res) => {
 
 const apiDeleteUser = async (req, res) => {
   try {
-    res.status(400).json(response)
+    res.status(200).json(response)
   } catch (error) {
     res.status(500).json({ error })
   }
