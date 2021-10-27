@@ -59,6 +59,7 @@ const apiLoginUser = async (req, res) => {
   }
 }
 
+//playing with sessions
 const apiWhoAmI = async (req, res) => {
   const userId = req.session.user
   if (!userId) return res.status(403).json({ message: 'Unauthorized' })
