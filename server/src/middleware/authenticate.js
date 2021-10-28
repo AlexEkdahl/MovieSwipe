@@ -1,40 +1,32 @@
-import { verifyToken } from '../util/crypt.js'
+import { isLoggedIn, isAdmin, isAuth } from '../validation/index.js'
 
-const verify = (req, res, next) => {
-  const token = req.headers.token
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: 'A token is required for authentication' })
+export const guest = (req, res, next) => {
+  if (isLoggedIn(req)) {
+    return res.status(400).json({ message: 'You are already logged in' })
   }
 
-  try {
-    const user = verifyToken(token)
-    req.user = user
-    next()
-  } catch (error) {
-    return res.status(403).json({ message: 'Token is not valid' })
+  next()
+}
+
+export const member = (req, res, next) => {
+  if (!isLoggedIn(req)) {
+    return res.status(400).json({ message: 'You must be logged in' })
   }
+
+  next()
 }
 
-const verifyAndAuthorize = (req, res, next) => {
-  verify(req, res, () => {
-    if (req.user.id === req.params.id || req.user.admin) {
-      next()
-    } else {
-      res.status(403).json({ message: 'Unauthorized' })
-    }
-  })
+export const admin = (req, res, next) => {
+  if (!isAdmin(req)) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
+  next()
 }
 
-const verifyAndAdminAuthorize = (req, res, next) => {
-  verify(req, res, () => {
-    if (req.user.admin) {
-      next()
-    } else {
-      res.status(403).json({ message: 'Unauthorized' })
-    }
-  })
-}
+export const verify = (req, res, next) => {
+  if (!isAuth(req)) {
+    return res.status(401).json({ message: 'Unauthorized' })
+  }
 
-export { verify, verifyAndAuthorize as auth, verifyAndAdminAuthorize as admin }
+  next()
+}

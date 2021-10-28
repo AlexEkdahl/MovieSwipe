@@ -1,4 +1,4 @@
-const validateEmail = (email) => {
+export const validateEmail = (email) => {
   const validRegex =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
 
@@ -6,4 +6,6 @@ const validateEmail = (email) => {
   return false
 }
 
-export { validateEmail }
+export const isAuth = (req) => {
+  return req.session.userId === req.params.id || req.session.admin
+}

@@ -3,8 +3,7 @@ import session from 'express-session'
 import cors from 'cors'
 import morgan from 'morgan'
 import { SESSION_OPTIONS } from './config/index.js'
-import users from './api/routes/auth.routes.js'
-import auth from './api/routes/auth.routes.js'
+import { users, auth } from './api/routes/index.js'
 
 export const createApp = (store) => {
   const app = express()

@@ -1,11 +1,9 @@
-import crypto from 'crypto-js'
 import dotenv from 'dotenv'
+import crypto from 'crypto-js'
 import jwt from 'jsonwebtoken'
-
 dotenv.config()
 
-const CRYPT_SECRET = process.env.PWD_SEC
-const JWT_SECRET = process.env.JWT_SEC
+const { CRYPT_SECRET, JWT_SECRET } = process.env
 
 const encrypt = (password) => {
   return crypto.AES.encrypt(password, CRYPT_SECRET).toString()
@@ -16,6 +14,10 @@ const decrypt = (password) => {
   return decryptPassword.toString(crypto.enc.Utf8)
 }
 
+const compare = (password, decryptedPassword) => {
+  return password === decrypt(decryptedPassword)
+}
+
 const generateToken = (id, admin) => {
   return jwt.sign({ id, admin }, JWT_SECRET, { expiresIn: '1d' })
 }
@@ -24,4 +26,4 @@ const verifyToken = (token) => {
   return jwt.verify(token, JWT_SECRET)
 }
 
-export { encrypt, decrypt, generateToken, verifyToken }
+export { encrypt, compare, generateToken, verifyToken }

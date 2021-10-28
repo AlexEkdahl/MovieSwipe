@@ -1,4 +1,4 @@
-import User from '../models/user.model.js'
+import { User } from '../models/index.js'
 import { encrypt } from '../../util/crypt.js'
 
 const apiGetUsers = async (req, res) => {
@@ -11,13 +11,14 @@ const apiGetUsers = async (req, res) => {
 
 const apiUpdateUser = async (req, res) => {
   const id = req.params.id
-  const { password, email, admin } = req.body
+  const { username, password, email, admin } = req.body
   const params = {}
 
   //populate params
   if (password) params.password = encrypt(password)
   if (email) params.email = email
-  if (req.user.admin && admin) params.admin = admin
+  if (username) params.username = username
+  if (req.session.admin && admin) params.admin = admin
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
@@ -35,7 +36,7 @@ const apiUpdateUser = async (req, res) => {
       email,
     })
   } catch (error) {
-    console.log(error)
+    console.error(error.message)
     res.status(500).json({ message: 'Something went wrong on server' })
   }
 }

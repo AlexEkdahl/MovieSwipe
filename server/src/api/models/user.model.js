@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
+import { compare } from '../../util/index.js'
 
-const UserSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -20,4 +21,8 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-export default mongoose.model('user', UserSchema)
+userSchema.methods.matchesPassword = function (password) {
+  return compare(password, this.password)
+}
+
+export default mongoose.model('user', userSchema)
