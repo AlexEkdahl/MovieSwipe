@@ -1,6 +1,3 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
 const {
   MONGO_USERNAME = 'admin',
   MONGO_PASSWORD = 'secret',
