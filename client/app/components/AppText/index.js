@@ -1,3 +1,3 @@
-import AppText from './AppText.js'
+import AppText from './AppText'
 
 export default AppText

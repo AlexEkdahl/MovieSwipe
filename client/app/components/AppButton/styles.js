@@ -8,8 +8,7 @@ export default styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 15,
-    width: 50,
-    height: 50,
+    width: '100%',
     marginVertical: 10,
   },
   text: {
