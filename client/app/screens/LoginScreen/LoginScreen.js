@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Image } from 'react-native'
 import styles from './styles'
 import * as Yup from 'yup'
-
 import Screen from '../../components/Screen'
 import { Form, FormField, SubmitButton } from '../../components/forms'
+import { login } from '../../api'
+import { AuthContext } from '../../auth'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
@@ -12,13 +13,20 @@ const validationSchema = Yup.object().shape({
 })
 
 export default LoginScreen = (props) => {
+  const authContext = useContext(AuthContext)
+
+  const handleSubmit = async ({ email, password }) => {
+    const result = await login(email, password)
+    if (!result.username) return
+    authContext.setUser(result)
+  }
   return (
     <Screen style={styles.container}>
       <Image style={styles.logo} source={require('../../assets/logo.png')} />
 
       <Form
         initialValues={{ email: '', password: '' }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={handleSubmit}
         validationSchema={validationSchema}>
         <FormField
           autoCapitalize='none'

@@ -32,25 +32,25 @@ const apiRegisterUser = async (req, res) => {
 }
 
 const apiLoginUser = async (req, res) => {
-  const { username, password } = req.body
-  if (!username || !password) {
+  const { email, password } = req.body
+  if (!email || !password) {
     return res.status(400).json({ message: 'Missing parameters' })
   }
 
   try {
-    const user = await User.findOne({ username })
+    const user = await User.findOne({ email })
     if (!user || !user.matchesPassword(password)) {
       return res.status(401).json({ message: 'Bad credentials' })
     }
 
     //dto
-    const { _id: id, username: name, email, admin } = user._doc
+    const { _id: id, username, email: mail, admin } = user._doc
     // const accessToken = generateToken(id, admin)
     logIn(req, user)
     res.status(200).json({
       id,
-      username: name,
-      email,
+      username,
+      email: mail,
       admin,
     })
   } catch (error) {
