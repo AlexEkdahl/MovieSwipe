@@ -31,7 +31,8 @@
     "react-native-web": "0.17.1",
     "react-tinder-card": "^1.4.5",
     "styled-components": "^5.3.3",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "expo-secure-store": "~11.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

@@ -10,7 +10,7 @@ import {
   ErrorMessage,
 } from '../../components/forms'
 import { login } from '../../api'
-import { AuthContext } from '../../auth'
+import { AuthContext, storeUser } from '../../auth'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
@@ -27,6 +27,7 @@ export default LoginScreen = (props) => {
     if (!result.ok) return setLoginFailed(true)
     setLoginFailed(false)
     authContext.setUser(result.data)
+    storeUser(result.data)
   }
   return (
     <Screen style={styles.container}>

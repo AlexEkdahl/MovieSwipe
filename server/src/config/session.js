@@ -1,10 +1,10 @@
 import { IN_PROD } from './app.js'
-const TEN_MINUTES = 1000 * 60 * 10
+const HALF_YEAR = 1000 * 60 * 60 * 24 * 180
 
 export const {
   SESSION_SECRET = 'secret',
   SESSION_NAME = 'sid',
-  SESSION_LIFETIME = TEN_MINUTES,
+  SESSION_LIFETIME = HALF_YEAR,
 } = process.env
 
 export const SESSION_OPTIONS = {

@@ -4,6 +4,7 @@ import SwipeScreen from '../screens/SwipeScreen'
 import LoginScreen from '../screens/LoginScreen'
 import Constants from 'expo-constants'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import logout from '../screens/logout'
 
 const Tab = createMaterialTopTabNavigator()
 const size = 30
@@ -37,7 +38,7 @@ function AppNavigator() {
       />
       <Tab.Screen
         name='Chat'
-        component={LoginScreen}
+        component={logout}
         options={{
           tabBarLabel: () => {
             return <MaterialCommunityIcons name='message' size={size} />

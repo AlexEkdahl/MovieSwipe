@@ -38,7 +38,7 @@ const SwipeScreen = () => {
     alreadyRemoved.push(nameToDelete)
   }
 
-  const outOfFrame = (id) => {
+  const outOfFrame = (dir, id) => {
     console.log(id + ' left the screen!')
     setMovies((old) => {
       return old.filter((char) => char._id !== id)

@@ -17,3 +17,7 @@ export const login = async (email, password) => {
 export const register = async (email, password, username) => {
   return await client.post('/register', { email, password, username })
 }
+
+export const logout = async () => {
+  return await client.post('/logout')
+}
