@@ -1,17 +1,43 @@
 import React from 'react'
-import { View, ImageBackground } from 'react-native'
-import styles from './styles'
-import AppText from '../AppText'
 import { DEFAULT_POSTER_URL } from '../../config'
+import styled from 'styled-components'
 
-function Card({ title, plot, image = DEFAULT_POSTER_URL }) {
+export const SwipeCard = styled.View`
+  margin-top: 30px;
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  max-width: 280px;
+  height: 500px;
+  shadow-color: black;
+  shadow-opacity: 0.1;
+  shadow-radius: 20px;
+  border-radius: 20px;
+  resize-mode: cover;
+`
+
+export const CardImage = styled.ImageBackground`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+`
+
+export const CardTitle = styled.Text`
+  position: absolute;
+  bottom: 0;
+  margin: 10px;
+  color: #fff;
+`
+
+function Card(props) {
+  const { title, plot, poster = DEFAULT_POSTER_URL } = props.movie
   return (
-    <ImageBackground style={styles.card} source={{ uri: image }}>
-      <View style={styles.detailsContainer}>
-        <AppText style={styles.title}>{title}</AppText>
-        <AppText style={styles.plot}>{plot}</AppText>
-      </View>
-    </ImageBackground>
+    <SwipeCard>
+      <CardImage source={{ uri: poster }}>
+        <CardTitle>{title}</CardTitle>
+      </CardImage>
+    </SwipeCard>
   )
 }
 

@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
+import * as Yup from 'yup'
 import { Image } from 'react-native'
 import styles from './styles'
-import * as Yup from 'yup'
 import Screen from '../../components/Screen'
 import {
   Form,
@@ -9,23 +9,27 @@ import {
   SubmitButton,
   ErrorMessage,
 } from '../../components/forms'
-import { login } from '../../api'
+import { register } from '../../api'
 import { AuthContext } from '../../auth'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
+  username: Yup.string().required().min(5).label('Username'),
   password: Yup.string().required().min(4).label('Password'),
 })
 
-export default LoginScreen = (props) => {
+function RegisterScreen() {
   const authContext = useContext(AuthContext)
-  const [loginFailed, setLoginFailed] = useState(false)
 
-  const handleSubmit = async ({ email, password }) => {
-    const result = await login(email, password)
-    console.log('result :>> ', result)
-    if (!result.ok) return setLoginFailed(true)
-    setLoginFailed(false)
+  const handleSubmit = async ({ email, password, username }) => {
+    const result = await register(email, password, username)
+
+    //display if wrong
+    if (!result.ok) {
+      console.log('fel :>> ', result)
+      return
+    }
+
     authContext.setUser(result.data)
   }
   return (
@@ -33,12 +37,15 @@ export default LoginScreen = (props) => {
       <Image style={styles.logo} source={require('../../assets/logo.png')} />
 
       <Form
-        initialValues={{ email: '', password: '' }}
+        initialValues={{ username: '', email: '', password: '' }}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}>
-        <ErrorMessage
-          error='Invalid email and/or password.'
-          visible={loginFailed}
+        <FormField
+          autoCapitalize='none'
+          autoCorrect={false}
+          icon='account'
+          name='username'
+          placeholder='Username'
         />
         <FormField
           autoCapitalize='none'
@@ -58,8 +65,10 @@ export default LoginScreen = (props) => {
           secureTextEntry
           textContentType='password'
         />
-        <SubmitButton title='Login' />
+        <SubmitButton title='Register' />
       </Form>
     </Screen>
   )
 }
+
+export default RegisterScreen

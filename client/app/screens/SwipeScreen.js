@@ -1,17 +1,80 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import SwipeableCardStack from '../components/SwipeableCardStack'
 import { View } from 'react-native'
-import Card from '../components/Card/Card'
-import Header from '../components/Header'
 
-export default function SwipeScreen() {
+const alreadyRemoved = []
+
+const SwipeScreen = () => {
+  const [movies, setMovies] = useState([])
+  const [likedMovies, setLikedMovies] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  const [lastDirection, setLastDirection] = useState()
+
+  useEffect(() => {
+    if (!movies.length) {
+      fetchData()
+    }
+  }, [movies])
+
+  useEffect(() => {
+    console.log(likedMovies)
+  }, [likedMovies])
+
+  const fetchData = async () => {
+    setLoading(true)
+    const page = Math.floor(Math.random() * 500)
+    const req = await fetch(
+      `https://movie-swipe-backend.herokuapp.com/api/v1/movies?page=${page}&limit=8`
+    )
+    let res = await req.json()
+    setMovies(res.moviesList)
+    setLoading(false)
+  }
+
+  const swiped = (direction, nameToDelete) => {
+    console.log('removing: ' + nameToDelete + ' to the ' + direction)
+    setLastDirection(direction)
+    alreadyRemoved.push(nameToDelete)
+  }
+
+  const outOfFrame = (id) => {
+    console.log(id + ' left the screen!')
+    setMovies((old) => {
+      return old.filter((char) => char._id !== id)
+    })
+  }
+
+  // const swipe = (dir) => {
+  //   const cardsLeft = movies.filter(
+  //     (person) => !alreadyRemoved.includes(person.name)
+  //   )
+  //   if (cardsLeft.length) {
+  //     const toBeRemoved = cardsLeft[cardsLeft.length - 1].name // Find the card object to be removed
+  //     const index = db.map((person) => person.name).indexOf(toBeRemoved) // Find the index of which to make the reference to
+  //     alreadyRemoved.push(toBeRemoved) // Make sure the next card gets removed next time if this card do not have time to exit the screen
+  //     childRefs[index].current.swipe(dir) // Swipe the card!
+  //   }
+  // }
+
   return (
-    <View>
-      <Header />
-      <Card
-        image='https://images.hdqwalls.com/wallpapers/thumb/batman-last-chance-5k-dy.jpg'
-        plot='This is'
-        title='holla'
+    <View
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+      }}>
+      <SwipeableCardStack
+        movies={movies}
+        outOfFrame={outOfFrame}
+        swiped={swiped}
       />
+
+      {/* <AppButton onPress={() => swipe('left')} title='Swipe left!' />
+      <AppButton onPress={() => swipe('right')} title='Swipe right!' /> */}
     </View>
   )
 }
+
+export default SwipeScreen

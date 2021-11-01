@@ -4,7 +4,7 @@ import styles from './styles'
 import AppButton from '../../components/AppButton'
 import AppText from '../../components/AppText/AppText'
 
-function WelcomeScreen(props) {
+function WelcomeScreen({ navigation }) {
   return (
     <ImageBackground
       style={styles.background}
@@ -14,8 +14,12 @@ function WelcomeScreen(props) {
         <AppText style={styles.text}>Swipe away</AppText>
       </View>
       <View style={styles.buttonsContainer}>
-        <AppButton title='Login' />
-        <AppButton title='Register' color='secondary' />
+        <AppButton title='Login' onPress={() => navigation.navigate('Login')} />
+        <AppButton
+          title='Register'
+          onPress={() => navigation.navigate('Register')}
+          color='secondary'
+        />
       </View>
     </ImageBackground>
   )
