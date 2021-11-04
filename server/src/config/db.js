@@ -6,4 +6,10 @@ const {
   MONGO_DATABASE = 'dev',
 } = process.env
 
+export const {
+  NEO_URI = 'bolt://localhost:7687',
+  NEO_USER = 'neo4j',
+  NEO_PASSWORD = 'secret',
+} = process.env
+
 export const MONGO_URI = `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/${MONGO_DATABASE}?retryWrites=true&w=majority`

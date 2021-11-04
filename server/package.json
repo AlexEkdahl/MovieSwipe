@@ -5,9 +5,11 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "eval $(cat .env) node src/index.js",
-    "dev": "eval $(cat .env) nodemon src/index.js"
+    "dev": "eval $(cat .env) nodemon src/index.js",
+    "up": "mkdir -p data && docker-compose up -d",
+    "stop": "docker-compose stop",
+    "down": "docker-compose down"
   },
   "keywords": [
     "skeleton",
@@ -24,7 +26,8 @@
     "ioredis": "^4.28.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.12",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "neo4j-driver": "^4.3.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
