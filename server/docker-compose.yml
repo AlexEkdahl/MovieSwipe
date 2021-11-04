@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  cache:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+    restart: on-failure
+    environment:
+      - REDIS_PASSWORD=redis
+    volumes:
+      - ./data:/data
+    command: ['--requirepass "secret"']
