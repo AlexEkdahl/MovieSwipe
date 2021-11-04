@@ -22,8 +22,7 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer theme={navigationTheme}>
         <AuthContext.Provider value={{ user, setUser }}>
-          {/* {user ? <AppNavigator /> : <AuthNavigator />} */}
-          <AppNavigator />
+          {user ? <AppNavigator /> : <AuthNavigator />}
         </AuthContext.Provider>
       </NavigationContainer>
     </SafeAreaProvider>

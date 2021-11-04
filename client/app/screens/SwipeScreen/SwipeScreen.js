@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import SwipeableCardStack from '../components/SwipeableCardStack'
+import SwipeableCardStack from '../../components/SwipeableCardStack'
 import { View } from 'react-native'
 
 const alreadyRemoved = []
@@ -17,10 +17,6 @@ const SwipeScreen = () => {
     }
   }, [movies])
 
-  useEffect(() => {
-    console.log(likedMovies)
-  }, [likedMovies])
-
   const fetchData = async () => {
     setLoading(true)
     const page = Math.floor(Math.random() * 500)
@@ -33,13 +29,11 @@ const SwipeScreen = () => {
   }
 
   const swiped = (direction, nameToDelete) => {
-    console.log('removing: ' + nameToDelete + ' to the ' + direction)
     setLastDirection(direction)
     alreadyRemoved.push(nameToDelete)
   }
 
   const outOfFrame = (dir, id) => {
-    console.log(id + ' left the screen!')
     setMovies((old) => {
       return old.filter((char) => char._id !== id)
     })

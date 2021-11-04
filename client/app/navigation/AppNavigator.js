@@ -4,7 +4,7 @@ import SwipeScreen from '../screens/SwipeScreen'
 import LoginScreen from '../screens/LoginScreen'
 import Constants from 'expo-constants'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import logout from '../screens/logout'
+import logout from '../components/logout.js'
 
 const Tab = createMaterialTopTabNavigator()
 const size = 30

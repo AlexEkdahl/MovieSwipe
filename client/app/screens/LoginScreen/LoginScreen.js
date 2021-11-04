@@ -11,6 +11,7 @@ import {
 } from '../../components/forms'
 import { login } from '../../api'
 import { AuthContext, storeUser } from '../../auth'
+import Logout from '../../components/logout'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
@@ -23,12 +24,12 @@ export default LoginScreen = (props) => {
 
   const handleSubmit = async ({ email, password }) => {
     const result = await login(email, password)
-    console.log('result :>> ', result)
     if (!result.ok) return setLoginFailed(true)
     setLoginFailed(false)
     authContext.setUser(result.data)
     storeUser(result.data)
   }
+
   return (
     <Screen style={styles.container}>
       <Image style={styles.logo} source={require('../../assets/logo.png')} />
@@ -61,6 +62,7 @@ export default LoginScreen = (props) => {
         />
         <SubmitButton title='Login' />
       </Form>
+      <Logout />
     </Screen>
   )
 }
