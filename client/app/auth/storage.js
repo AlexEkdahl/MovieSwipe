@@ -11,6 +11,7 @@ export const storeUser = async (user) => {
 export const getUser = async () => {
   try {
     const user = await SecureStore.getItemAsync('user')
+
     return JSON.parse(user)
   } catch (error) {
     console.log('Error getting user')

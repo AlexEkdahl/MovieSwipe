@@ -1,4 +1,4 @@
-import { User } from '../models/index.js'
+import User from '../models/movie/user.model.js'
 import { encrypt } from '../../util/index.js'
 import { validateEmail, logIn, logOut } from '../../validation/index.js'
 
@@ -10,18 +10,18 @@ const apiRegisterUser = async (req, res) => {
       return res.status(400).json({ message: 'Missing parameters' })
     }
 
-    const found = await User.exists({ email })
+    const found = await User.findOne({ email })
     if (found) {
-      console.log('found :>> ', found)
       return res.status(400).json({ message: 'Invalid email' })
     }
-    const user = await User.create({
+    const user = new User({
       username,
       password: encrypt(password),
       email,
-      admin,
+      admin: false,
     })
 
+    await user.save()
     logIn(req, user)
 
     res.status(201).json({ message: 'OK' })
@@ -33,6 +33,8 @@ const apiRegisterUser = async (req, res) => {
 
 const apiLoginUser = async (req, res) => {
   const { email, password } = req.body
+  console.log(`email`, email)
+  console.log(`password`, password)
   if (!email || !password) {
     return res.status(400).json({ message: 'Missing parameters' })
   }
@@ -44,15 +46,10 @@ const apiLoginUser = async (req, res) => {
     }
 
     //dto
-    const { _id: id, username, email: mail, admin } = user._doc
+    const { password: pwd, model, ...other } = user
     // const accessToken = generateToken(id, admin)
     logIn(req, user)
-    res.status(200).json({
-      id,
-      username,
-      email: mail,
-      admin,
-    })
+    res.status(200).json(other)
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Something went wrong on server' })
@@ -71,12 +68,12 @@ const apiLogoutUser = async (req, res) => {
 const apiWhoAmI = async (req, res) => {
   const userId = req.session.userId
   try {
-    const user = await User.findById(userId)
+    const user = await User.findOne({ id: userId })
     if (!user) return res.status(403).json({ message: 'Unauthorized' })
-    const { _id: id, username: name, email, admin } = user._doc
+    const { id, username, email, admin } = user
     res.status(200).json({
       id,
-      username: name,
+      username,
       email,
       admin,
     })

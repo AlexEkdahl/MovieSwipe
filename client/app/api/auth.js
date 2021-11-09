@@ -21,3 +21,7 @@ export const register = async (email, password, username) => {
 export const logout = async () => {
   return await client.post('/logout')
 }
+
+export const whoami = async () => {
+  return await client.get('/whoami')
+}

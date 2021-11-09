@@ -19,9 +19,9 @@ export default function SwipeableCardStack(props) {
       {movies.map((movie, i) => (
         <TinderCard
           ref={refs[i]}
-          key={movie._id}
+          key={i}
           preventSwipe={['up', 'down']}
-          onCardLeftScreen={(dir) => outOfFrame(dir, movie._id)}
+          onCardLeftScreen={(dir) => outOfFrame(dir, movie.id)}
           onSwipe={(dir) => swiped(dir, movie.title)}>
           <Card movie={movie}></Card>
         </TinderCard>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SwipeableCardStack from '../../components/SwipeableCardStack'
 import { View } from 'react-native'
+import { getMovies, likeMovie } from '../../api'
 
 const alreadyRemoved = []
 
@@ -12,19 +13,17 @@ const SwipeScreen = () => {
   const [lastDirection, setLastDirection] = useState()
 
   useEffect(() => {
+    console.log(`movies.length`, movies.length)
     if (!movies.length) {
-      fetchData()
+      fetchMovies()
     }
   }, [movies])
 
-  const fetchData = async () => {
-    setLoading(true)
+  const fetchMovies = async () => {
     const page = Math.floor(Math.random() * 500)
-    const req = await fetch(
-      `https://movie-swipe-backend.herokuapp.com/api/v1/movies?page=${page}&limit=8`
-    )
-    let res = await req.json()
-    setMovies(res.moviesList)
+    setLoading(true)
+    const res = await getMovies({ page })
+    setMovies(res.data.movies)
     setLoading(false)
   }
 
@@ -33,10 +32,13 @@ const SwipeScreen = () => {
     alreadyRemoved.push(nameToDelete)
   }
 
-  const outOfFrame = (dir, id) => {
+  const outOfFrame = async (dir, id) => {
     setMovies((old) => {
-      return old.filter((char) => char._id !== id)
+      return old.filter((movie) => movie.id !== id)
     })
+    if (dir === 'right') {
+      const res = await likeMovie(id)
+    }
   }
 
   // const swipe = (dir) => {

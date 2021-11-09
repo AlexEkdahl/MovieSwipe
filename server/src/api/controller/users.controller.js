@@ -1,5 +1,6 @@
-import { User } from '../models/index.js'
-import { encrypt } from '../../util/crypt.js'
+import User from '../models/movie/user.model.js'
+import { encrypt } from '../../util/index.js'
+import { RELATION_NAMES } from '../../config/relations.js'
 
 const apiGetUsers = async (req, res) => {
   try {
@@ -49,10 +50,25 @@ const apiDeleteUser = async (req, res) => {
   }
 }
 
+const apiAddRelation = async (req, res) => {
+  const { movieId, type } = req.body
+  console.log(`req.body`, req.body)
+  const id = req.session.userId
+  try {
+    const user = await User.findOne({ id })
+    await user.setRelation(movieId, RELATION_NAMES.LIKES)
+    res.status(200).json({ message: 'Movie liked' })
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ message: 'Something went wrong on server' })
+  }
+}
+
 const controller = {
   apiGetUsers,
   apiUpdateUser,
   apiDeleteUser,
+  apiAddRelation,
 }
 
 export default controller

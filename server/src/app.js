@@ -3,7 +3,7 @@ import session from 'express-session'
 import cors from 'cors'
 import morgan from 'morgan'
 import { SESSION_OPTIONS } from './config/index.js'
-import { users, auth } from './api/routes/index.js'
+import { users, auth, movies } from './api/routes/index.js'
 
 export const createApp = (store) => {
   const app = express()
@@ -17,8 +17,9 @@ export const createApp = (store) => {
   app.set('trust proxy', 1)
 
   //routes
-  app.use('/api/', users)
   app.use('/api/', auth)
+  app.use('/api/movies', movies)
+  app.use('/api/users', users)
 
   //404 - no route in use
   app.use('*', (req, res, next) =>
