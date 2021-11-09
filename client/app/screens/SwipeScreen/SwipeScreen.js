@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import SwipeableCardStack from '../../components/SwipeableCardStack'
 import { View } from 'react-native'
-import { getMovies, likeMovie } from '../../api'
+import { getMovies, connectToMovie } from '../../api'
 
 const alreadyRemoved = []
 
@@ -13,7 +13,6 @@ const SwipeScreen = () => {
   const [lastDirection, setLastDirection] = useState()
 
   useEffect(() => {
-    console.log(`movies.length`, movies.length)
     if (!movies.length) {
       fetchMovies()
     }
@@ -37,7 +36,9 @@ const SwipeScreen = () => {
       return old.filter((movie) => movie.id !== id)
     })
     if (dir === 'right') {
-      const res = await likeMovie(id)
+      const res = await connectToMovie(id, 'like')
+    } else {
+      const res = await connectToMovie(id, 'dislike')
     }
   }
 

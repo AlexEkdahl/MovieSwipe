@@ -52,12 +52,16 @@ const apiDeleteUser = async (req, res) => {
 
 const apiAddRelation = async (req, res) => {
   const { movieId, type } = req.body
-  console.log(`req.body`, req.body)
   const id = req.session.userId
   try {
     const user = await User.findOne({ id })
-    await user.setRelation(movieId, RELATION_NAMES.LIKES)
-    res.status(200).json({ message: 'Movie liked' })
+    if (type === 'dislikes') {
+      await user.setRelation(movieId, RELATION_NAMES.DISLIKES)
+    } else {
+      await user.setRelation(movieId, RELATION_NAMES.LIKES)
+    }
+
+    res.status(200).json({ message: `rel ${type}` })
   } catch (error) {
     console.error(error.message)
     res.status(500).json({ message: 'Something went wrong on server' })

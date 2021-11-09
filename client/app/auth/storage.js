@@ -14,7 +14,7 @@ export const getUser = async () => {
 
     return JSON.parse(user)
   } catch (error) {
-    console.log('Error getting user')
+    console.error('Error getting user')
   }
 }
 
@@ -22,6 +22,6 @@ export const removeUser = async () => {
   try {
     await SecureStore.deleteItemAsync('user')
   } catch (error) {
-    console.log('Error deleting user')
+    console.error('Error deleting user')
   }
 }
