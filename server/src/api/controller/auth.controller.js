@@ -1,4 +1,4 @@
-import User from '../models/movie/user.model.js'
+import { User } from '../models/index.js'
 import { encrypt } from '../../util/index.js'
 import { validateEmail, logIn, logOut } from '../../validation/index.js'
 

@@ -1,7 +1,7 @@
-import { cypher } from '../../../db/neo4j.js'
 import fs from 'fs'
 import util from 'util'
 import * as crypto from 'crypto'
+import { cypher } from '../../db/neo4j.js'
 
 const readdir = util.promisify(fs.readdir)
 
@@ -12,17 +12,17 @@ const uuid = () => {
   )
 }
 
-const getParams = async (props) => {
-  if (!props) return ''
-  let models = ['model']
+export const getParams = async (props) => {
+  if (Object.keys(props).length === 0) return ''
+  const models = ['model']
   for (let key in props) {
     Array.isArray(props[key]) && models.push(key)
   }
-  let keys = Object.keys(props).filter((k) => !models.includes(k))
+  const keys = Object.keys(props).filter((k) => !models.includes(k))
   return '{' + keys.map((key) => key + ': $' + key).join(', ') + '}'
 }
 
-export default class NeoModel {
+export class NeoModel {
   constructor(props) {
     this.model = this.name || this.constructor.name
     Object.assign(this, props)
@@ -42,7 +42,7 @@ export default class NeoModel {
     models = models.map((m) => m.replace('.js', ''))
 
     for (let key in this) {
-      let prop = this[key]
+      const prop = this[key]
       if (!Array.isArray(prop)) continue
 
       prop.forEach(async (p) => {
@@ -68,7 +68,7 @@ export default class NeoModel {
   }
 
   static async find({ limit = 10, page = 0, ...props } = {}) {
-    let records = await cypher(
+    const records = await cypher(
       `MATCH (m:${this.model || this.name} ${await getParams(
         props
       )}) RETURN m SKIP ${page * limit} LIMIT ${limit}`,
@@ -80,7 +80,7 @@ export default class NeoModel {
   }
 
   static async findOne(props) {
-    let records = await cypher(
+    const records = await cypher(
       `MATCH (m:${this.model || this.name} ${await getParams(props)}) RETURN m`,
       props
     )
@@ -110,10 +110,10 @@ export default class NeoModel {
 
     await Promise.all(
       relations.map(async (rel) => {
-        let props = {
+        const props = {
           id: this.id,
         }
-        let model = await cypher(
+        const model = await cypher(
           `
         MATCH (:${this.model} {id: $id})-[:${rel}]->(m) RETURN m
       `,

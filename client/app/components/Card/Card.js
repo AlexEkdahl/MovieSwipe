@@ -27,7 +27,7 @@ export const CardTitle = styled.Text`
   position: absolute;
   bottom: 0;
   margin: 10px;
-  color: #fff;
+  color: red;
 `
 
 function Card(props) {
