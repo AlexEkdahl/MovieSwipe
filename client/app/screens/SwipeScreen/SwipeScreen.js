@@ -36,7 +36,7 @@ const SwipeScreen = () => {
       return old.filter((movie) => movie.id !== id)
     })
     if (dir === 'right') {
-      const res = await connectToMovie(id, 'like')
+      const res = await connectToMovie(id, 'likes')
     } else {
       const res = await connectToMovie(id, 'dislikes')
     }

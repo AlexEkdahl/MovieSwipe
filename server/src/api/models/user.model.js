@@ -1,6 +1,6 @@
 import { NeoModel, getParams } from './neo.model.js'
 import { compare } from '../../util/index.js'
-import { cypher } from '../../db/neo4j.js'
+import { cypher, recordsMapper } from '../../db/neo4j.js'
 
 export default class User extends NeoModel {
   constructor(props) {

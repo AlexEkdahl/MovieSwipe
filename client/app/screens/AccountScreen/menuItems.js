@@ -13,6 +13,7 @@ export default menuItems = [
   {
     title: 'Friends',
     icon: { name: 'account-supervisor', backgroundColor: colors.primary },
+    targetScreen: routes.FRIENDS,
   },
   {
     title: 'Friend request',
@@ -21,7 +22,7 @@ export default menuItems = [
   {
     title: 'Find User',
     icon: { name: 'account-search', backgroundColor: colors.primary },
-    targetScreen: routes.LOGIN,
+    targetScreen: routes.SEARCH_USER,
   },
   {
     title: 'Settings',

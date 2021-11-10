@@ -1,7 +1,7 @@
 import fs from 'fs'
 import util from 'util'
 import * as crypto from 'crypto'
-import { cypher } from '../../db/neo4j.js'
+import { cypher, recordsMapper } from '../../db/neo4j.js'
 
 const readdir = util.promisify(fs.readdir)
 
@@ -137,6 +137,28 @@ export class NeoModel {
       CREATE (a)-[r:${relation}]->(b)
       `,
       { id: nodeID }
+    )
+  }
+
+  async setRelation(nodeID, relation = 'RELTYPE') {
+    if (!nodeID) throw 'Must provide node to detach'
+
+    await cypher(
+      `
+      MATCH (a:${this.model || this.name} {id: "${this.id}"})
+      MATCH (b {id: $id})
+      CREATE (a)-[r:${relation}]->(b)
+      `,
+      { id: nodeID }
+    )
+  }
+
+  static async relations({ rel, ...props }) {
+    return await cypher(
+      `
+      MATCH (:${this.model || this.name} {id: $id})-[:${rel}]->(m) RETURN m
+      `,
+      props
     )
   }
 

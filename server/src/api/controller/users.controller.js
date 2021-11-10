@@ -59,7 +59,6 @@ const apiAddRelation = async (req, res) => {
   const id = userId ? userId : req.session.userId
   try {
     const user = await User.findOne({ id })
-
     switch (type) {
       case 'dislikes':
         await user.setRelation(nodeId, RELATION_NAMES.DISLIKES)
@@ -81,11 +80,26 @@ const apiAddRelation = async (req, res) => {
   }
 }
 
+const apiGetUserFriends = async (req, res) => {
+  const id = req.session.userId
+  try {
+    const friends = await User.relations({
+      rel: RELATION_NAMES.FRIENDS,
+      id,
+    })
+    res.status(200).json(friends)
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ message: 'Something went wrong on server' })
+  }
+}
+
 const controller = {
-  apiGetUsers,
-  apiUpdateUser,
-  apiDeleteUser,
   apiAddRelation,
+  apiDeleteUser,
+  apiGetUsers,
+  apiGetUserFriends,
+  apiUpdateUser,
 }
 
 export default controller
