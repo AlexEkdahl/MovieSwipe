@@ -14,7 +14,7 @@ export default function App() {
     // const userFromStore = await getUser()
     const userFromStore = await whoami()
     if (!userFromStore.ok) return
-    setUser(userFromStore)
+    setUser(userFromStore.data)
   }
 
   useEffect(() => {

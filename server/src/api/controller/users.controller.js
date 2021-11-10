@@ -3,9 +3,13 @@ import { encrypt } from '../../util/index.js'
 import { RELATION_NAMES } from '../../config/index.js'
 
 const apiGetUsers = async (req, res) => {
+  const { search: username, userId } = req.query
+  const uid = userId ? userId : req.session.userId
   try {
-    res.status(200).json({ users: [] })
+    const users = await User.find({ username, uid })
+    res.status(200).json(users)
   } catch (error) {
+    console.error(error.message)
     res.status(500).json({ error })
   }
 }
@@ -55,10 +59,19 @@ const apiAddRelation = async (req, res) => {
   const id = userId ? userId : req.session.userId
   try {
     const user = await User.findOne({ id })
-    if (type === 'dislikes') {
-      await user.setRelation(nodeId, RELATION_NAMES.DISLIKES)
-    } else {
-      await user.setRelation(nodeId, RELATION_NAMES.LIKES)
+
+    switch (type) {
+      case 'dislikes':
+        await user.setRelation(nodeId, RELATION_NAMES.DISLIKES)
+        break
+      case 'likes':
+        await user.setRelation(nodeId, RELATION_NAMES.LIKES)
+        break
+      case 'friends':
+        await user.setRelation(nodeId, RELATION_NAMES.FRIENDS)
+        break
+      default:
+        throw new Error('Invalid relation type')
     }
 
     res.status(200).json({ message: `rel ${type}` })

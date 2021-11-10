@@ -1,10 +1,11 @@
 import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import SwipeScreen from '../screens/SwipeScreen'
+import AccountScreen from '../screens/AccountScreen'
 import LoginScreen from '../screens/LoginScreen'
 import Constants from 'expo-constants'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import logout from '../components/logout.js'
+import AccountNavigator from './AccountNavigator'
 
 const Tab = createMaterialTopTabNavigator()
 const size = 30
@@ -20,7 +21,7 @@ function AppNavigator() {
       }}>
       <Tab.Screen
         name='Settings'
-        component={LoginScreen}
+        component={AccountNavigator}
         options={{
           tabBarLabel: () => {
             return <MaterialCommunityIcons name='sword' size={size} />
@@ -38,7 +39,7 @@ function AppNavigator() {
       />
       <Tab.Screen
         name='Chat'
-        component={logout}
+        component={LoginScreen}
         options={{
           tabBarLabel: () => {
             return <MaterialCommunityIcons name='message' size={size} />

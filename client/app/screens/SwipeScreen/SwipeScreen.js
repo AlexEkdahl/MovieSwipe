@@ -20,10 +20,10 @@ const SwipeScreen = () => {
 
   const fetchMovies = async () => {
     const page = Math.floor(Math.random() * 500)
-    setLoading(true)
+    // setLoading(true)
     const res = await getMovies({ page })
     setMovies(res.data.movies)
-    setLoading(false)
+    // setLoading(false)
   }
 
   const swiped = (direction, nameToDelete) => {
@@ -38,7 +38,7 @@ const SwipeScreen = () => {
     if (dir === 'right') {
       const res = await connectToMovie(id, 'like')
     } else {
-      const res = await connectToMovie(id, 'dislike')
+      const res = await connectToMovie(id, 'dislikes')
     }
   }
 

@@ -4,7 +4,7 @@ import { admin, verify, member } from '../../middleware/index.js'
 
 const router = express.Router()
 
-router.route('/').get(admin, UsersCtrl.apiGetUsers)
+router.route('/').get(member, UsersCtrl.apiGetUsers)
 router.route('/connect').post(member, UsersCtrl.apiAddRelation)
 router.route('/:id').patch(verify, UsersCtrl.apiUpdateUser)
 
