@@ -6,4 +6,5 @@ export default Object.freeze({
   REGISTER: 'Register',
   SEARCH_USER: 'SearchUser',
   FRIENDS: 'Friends',
+  FRIEND_PROFILE: 'FriendProfile',
 })

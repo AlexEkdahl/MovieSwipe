@@ -1,35 +1,37 @@
-import React, { useState, useEffect } from 'react'
-import SwipeableCardStack from '../../components/SwipeableCardStack'
+import React, { useState, useEffect, useMemo } from 'react'
 import { View } from 'react-native'
 import { getMovies, connectToMovie } from '../../api'
+import SwipeableCardStack from '../../components/SwipeableCardStack'
+import Screen from '../../components/Screen'
+import Button from '../../components/Button'
 import Loading from '../../components/Loading'
-
-const alreadyRemoved = []
+import styles from './styles'
 
 const SwipeScreen = () => {
   const [movies, setMovies] = useState([])
-  const [likedMovies, setLikedMovies] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const [lastDirection, setLastDirection] = useState()
+  const refs = useMemo(
+    () =>
+      Array(movies.length)
+        .fill(0)
+        .map((i) => React.createRef()),
+    [movies]
+  )
 
   useEffect(() => {
     if (!movies.length) {
+      setLoading(true)
       fetchMovies()
     }
   }, [movies])
 
   const fetchMovies = async () => {
-    const page = Math.floor(Math.random() * 500)
     setLoading(true)
+    const page = Math.floor(Math.random() * 500)
     const res = await getMovies({ page })
     setMovies(res.data.movies)
     setLoading(false)
-  }
-
-  const swiped = (direction, nameToDelete) => {
-    setLastDirection(direction)
-    alreadyRemoved.push(nameToDelete)
   }
 
   const outOfFrame = async (dir, id) => {
@@ -43,36 +45,36 @@ const SwipeScreen = () => {
     }
   }
 
-  // const swipe = (dir) => {
-  //   const cardsLeft = movies.filter(
-  //     (person) => !alreadyRemoved.includes(person.name)
-  //   )
-  //   if (cardsLeft.length) {
-  //     const toBeRemoved = cardsLeft[cardsLeft.length - 1].name // Find the card object to be removed
-  //     const index = db.map((person) => person.name).indexOf(toBeRemoved) // Find the index of which to make the reference to
-  //     alreadyRemoved.push(toBeRemoved) // Make sure the next card gets removed next time if this card do not have time to exit the screen
-  //     childRefs[index].current.swipe(dir) // Swipe the card!
-  //   }
-  // }
+  const swipe = (dir) => {
+    if (movies.length < 1) {
+      return
+    }
+    refs[movies.length - 1].current.swipe(dir) // Swipe the card!
+  }
 
   return (
-    <View
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-      }}>
-      <Loading visible={loading} />
-      <SwipeableCardStack
-        movies={movies}
-        outOfFrame={outOfFrame}
-        swiped={swiped}
-      />
-
-      {/* <AppButton onPress={() => swipe('left')} title='Swipe left!' />
-      <AppButton onPress={() => swipe('right')} title='Swipe right!' /> */}
-    </View>
+    <>
+      <Screen style={styles.container}>
+        <Loading visible={loading} />
+        <SwipeableCardStack
+          movies={movies}
+          outOfFrame={outOfFrame}
+          refs={refs}
+        />
+      </Screen>
+      <View style={styles.bottonContainer}>
+        <Button
+          style={styles.botton}
+          onPress={() => swipe('left')}
+          title='<-'
+        />
+        <Button
+          style={styles.botton}
+          onPress={() => swipe('right')}
+          title='->'
+        />
+      </View>
+    </>
   )
 }
 

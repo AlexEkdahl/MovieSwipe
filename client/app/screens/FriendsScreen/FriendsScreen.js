@@ -3,24 +3,34 @@ import { getFriends } from '../../api'
 import Screen from '../../components/Screen'
 import styles from './styles'
 import UserCard from '../../components/UserCard/UserCard'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 export default function FriendsScreen({ navigation }) {
   const [friends, setFriends] = useState([])
 
   useEffect(() => {
-    const getMyFriends = async () => {
-      const friends = await getFriends()
-      if (!friends.ok) return
-      setFriends(friends.data)
-    }
     getMyFriends()
   }, [])
+
+  const getMyFriends = async () => {
+    const friends = await getFriends()
+    if (!friends.ok) return
+    setFriends(friends.data)
+  }
+
+  const onPress = (user) => {
+    navigation.navigate('FriendProfile', user)
+  }
 
   return (
     <Screen style={styles.container}>
       {friends &&
         friends.map((user) => {
-          return <UserCard key={user.id} user={user} navigation={navigation} />
+          return (
+            <TouchableWithoutFeedback key={user.id}>
+              <UserCard user={user} onPress={onPress} />
+            </TouchableWithoutFeedback>
+          )
         })}
     </Screen>
   )

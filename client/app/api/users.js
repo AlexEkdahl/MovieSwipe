@@ -18,3 +18,7 @@ export const sendFriendRequest = async (friendId) => {
 export const getFriends = async () => {
   return await client.get('/users/friends')
 }
+
+export const getMatchedMovies = async (friendId) => {
+  return await client.get(`/users/friends/${friendId}/match`)
+}

@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import AccountScreen from '../screens/AccountScreen'
 import SearchUserScreen from '../screens/SearchUserScreen'
 import FriendsScreen from '../screens/FriendsScreen'
+import FriendProfileScreen from '../screens/FriendProfileScreen'
 
 const Stack = createStackNavigator()
 
@@ -22,6 +23,11 @@ const AccountNavigator = () => (
       options={{ headerShown: false }}
       name='Friends'
       component={FriendsScreen}
+    />
+    <Stack.Screen
+      options={{ headerShown: false }}
+      name='FriendProfile'
+      component={FriendProfileScreen}
     />
   </Stack.Navigator>
 )

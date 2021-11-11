@@ -1,19 +1,12 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import Card from '../Card'
 import styles from './styles'
 import TinderCard from 'react-tinder-card'
 
 export default function SwipeableCardStack(props) {
-  const { movies, outOfFrame, swiped } = props
+  const { movies, outOfFrame, refs } = props
 
-  const refs = useMemo(
-    () =>
-      Array(movies.length)
-        .fill(0)
-        .map((i) => React.createRef()),
-    []
-  )
   return (
     <View style={styles.container}>
       {movies.map((movie, i) => (
@@ -21,8 +14,7 @@ export default function SwipeableCardStack(props) {
           ref={refs[i]}
           key={i}
           preventSwipe={['up', 'down']}
-          onCardLeftScreen={(dir) => outOfFrame(dir, movie.id)}
-          onSwipe={(dir) => swiped(dir, movie.title)}>
+          onCardLeftScreen={(dir) => outOfFrame(dir, movie.id)}>
           <Card movie={movie}></Card>
         </TinderCard>
       ))}

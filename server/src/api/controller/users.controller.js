@@ -87,7 +87,13 @@ const apiGetUserFriends = async (req, res) => {
       rel: RELATION_NAMES.FRIENDS,
       id,
     })
-    res.status(200).json(friends)
+    const request = friends.map((friend) => {
+      return {
+        id: friend.id,
+        username: friend.username,
+      }
+    })
+    res.status(200).json(request)
   } catch (error) {
     console.error(error.message)
     res.status(500).json({ message: 'Something went wrong on server' })

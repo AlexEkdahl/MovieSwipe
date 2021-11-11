@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import styles from './styles'
-import Screen from '../../components/Screen'
 import { getUsers } from '../../api/users'
-import {
-  Form,
-  FormField,
-  SubmitButton,
-  ErrorMessage,
-} from '../../components/forms'
+import { Form, FormField, ErrorMessage } from '../../components/forms'
+import { sendFriendRequest } from '../../api'
+import Screen from '../../components/Screen'
 import UserCard from '../../components/UserCard/UserCard'
-import { View } from 'react-native'
+import styles from './styles'
 
 export default function SearchUserScreen() {
   const [input, setInput] = useState('')
@@ -28,6 +23,10 @@ export default function SearchUserScreen() {
     const timer = setTimeout(handleChangeText, 300)
     return () => clearTimeout(timer)
   }, [input])
+
+  const friendRequestHandler = async (user) => {
+    const res = await sendFriendRequest(user.id)
+  }
 
   const handleShowError = (data) => {
     if (data.length === 0) {
@@ -56,7 +55,13 @@ export default function SearchUserScreen() {
 
       {users &&
         users.map((user) => {
-          return <UserCard key={user.id} user={user} />
+          return (
+            <UserCard
+              key={user.id}
+              user={user}
+              friendRequest={() => friendRequestHandler(user)}
+            />
+          )
         })}
     </Screen>
   )
