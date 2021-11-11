@@ -22,4 +22,20 @@ export default class Movie extends NeoModel {
       return new this(rec)
     }) // return a NeoModel object with methods
   }
+
+  static async matchingMovies({ limit = 10, page = 0, ...props } = {}) {
+    const records = await cypher(
+      `MATCH 
+      (u2:User {id: $me})-
+      [:LIKES]->(m:${this.model || this.name})<-[:LIKES]
+      -(u1:User {id: $id})
+      RETURN m
+      SKIP ${page * limit} LIMIT ${limit}`,
+      props
+    )
+    return records.map((rec) => {
+      rec.imdb = JSON.parse(rec.imdb).rating
+      return new this(rec)
+    }) // return a NeoModel object with methods
+  }
 }

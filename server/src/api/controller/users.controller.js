@@ -1,4 +1,4 @@
-import { User } from '../models/index.js'
+import { User, Movie } from '../models/index.js'
 import { encrypt } from '../../util/index.js'
 import { RELATION_NAMES } from '../../config/index.js'
 
@@ -94,12 +94,25 @@ const apiGetUserFriends = async (req, res) => {
   }
 }
 
+const apiGetMatchingMovies = async (req, res) => {
+  const friendId = req.params.id
+  const id = req.session.userId
+  try {
+    const movies = await Movie.matchingMovies({ me: id, id: friendId })
+    res.status(200).json(movies)
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ message: 'Something went wrong on server' })
+  }
+}
+
 const controller = {
   apiAddRelation,
   apiDeleteUser,
   apiGetUsers,
   apiGetUserFriends,
   apiUpdateUser,
+  apiGetMatchingMovies,
 }
 
 export default controller
