@@ -1,7 +1,7 @@
 //temp
 import React, { useContext } from 'react'
 import { View } from 'react-native'
-import AppButton from './AppButton'
+import AppButton from './Button'
 import { logout } from '../api'
 import { AuthContext } from '../auth'
 import { removeUser } from '../auth'

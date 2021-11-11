@@ -2,16 +2,16 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import styles from './styles.js'
 import { colors } from '../../config'
-import AppText from '../AppText'
+import Text from '../Text'
 
-function AppButton({ title, onPress, color = 'primary' }) {
+function Button({ title, onPress, color = 'primary' }) {
   return (
     <TouchableOpacity
       style={[styles.button, { backgroundColor: colors[color] }]}
       onPress={onPress}>
-      <AppText style={styles.text}>{title}</AppText>
+      <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   )
 }
 
-export default AppButton
+export default Button

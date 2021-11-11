@@ -1,7 +1,7 @@
 import { create } from 'apisauce'
 
 const apiClient = create({
-  baseURL: 'http://127.0.0.1:8888/api',
+  baseURL: 'http://192.168.10.177:8888/api',
   headers: {
     'Content-Type': 'application/json',
   },

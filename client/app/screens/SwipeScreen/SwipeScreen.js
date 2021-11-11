@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import SwipeableCardStack from '../../components/SwipeableCardStack'
 import { View } from 'react-native'
 import { getMovies, connectToMovie } from '../../api'
+import Loading from '../../components/Loading'
 
 const alreadyRemoved = []
 
@@ -20,10 +21,10 @@ const SwipeScreen = () => {
 
   const fetchMovies = async () => {
     const page = Math.floor(Math.random() * 500)
-    // setLoading(true)
+    setLoading(true)
     const res = await getMovies({ page })
     setMovies(res.data.movies)
-    // setLoading(false)
+    setLoading(false)
   }
 
   const swiped = (direction, nameToDelete) => {
@@ -62,6 +63,7 @@ const SwipeScreen = () => {
         justifyContent: 'center',
         width: '100%',
       }}>
+      <Loading visible={loading} />
       <SwipeableCardStack
         movies={movies}
         outOfFrame={outOfFrame}

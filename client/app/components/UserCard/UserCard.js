@@ -4,7 +4,7 @@ import styles from './styles'
 import { ListItem } from '../lists'
 import { sendFriendRequest } from '../../api/users'
 
-export default function UserCard({ user }) {
+export default function UserCard({ user, navigation }) {
   const friendRequestHandler = async () => {
     const res = await sendFriendRequest(user.id)
     console.log(res.data)

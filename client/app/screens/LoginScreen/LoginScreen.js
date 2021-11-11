@@ -11,7 +11,6 @@ import {
 } from '../../components/forms'
 import { login } from '../../api'
 import { AuthContext, storeUser } from '../../auth'
-import Logout from '../../components/logout'
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
@@ -62,7 +61,6 @@ export default LoginScreen = (props) => {
         />
         <SubmitButton title='Login' />
       </Form>
-      <Logout />
     </Screen>
   )
 }

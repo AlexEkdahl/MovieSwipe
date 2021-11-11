@@ -4,7 +4,7 @@ import Screen from '../../components/Screen'
 import styles from './styles'
 import UserCard from '../../components/UserCard/UserCard'
 
-export default function FriendsScreen() {
+export default function FriendsScreen({ navigation }) {
   const [friends, setFriends] = useState([])
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function FriendsScreen() {
     <Screen style={styles.container}>
       {friends &&
         friends.map((user) => {
-          return <UserCard key={user.id} user={user} />
+          return <UserCard key={user.id} user={user} navigation={navigation} />
         })}
     </Screen>
   )

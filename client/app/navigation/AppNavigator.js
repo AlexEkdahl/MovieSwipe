@@ -16,7 +16,6 @@ function AppNavigator() {
       initialRouteName='Swipe'
       screenOptions={{
         tabBarStyle: { paddingTop: Constants.statusBarHeight },
-        swipeEnabled: false,
         lazy: true,
       }}>
       <Tab.Screen
@@ -32,6 +31,7 @@ function AppNavigator() {
         name='Swipe'
         component={SwipeScreen}
         options={{
+          swipeEnabled: false,
           tabBarLabel: () => {
             return <MaterialCommunityIcons name='swap-horizontal' size={size} />
           },
