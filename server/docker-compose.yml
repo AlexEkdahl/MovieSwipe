@@ -2,13 +2,25 @@ version: '3'
 
 services:
   cache:
-    image: redis
-    container_name: redis
+    image: redis:alpine
+    container_name: redis-cache
     ports:
       - 6379:6379
     restart: on-failure
-    environment:
-      - REDIS_PASSWORD=redis
     volumes:
-      - ./data:/data
+      - ./data/cache:/data:db
     command: ['--requirepass "secret"']
+    env_file:
+      - .env
+
+  db:
+    image: neo4j/neo4j-arm64-experimental:4.3.7-arm64
+    container_name: neo-db
+    ports:
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - ./data/neo:/data/
+      - ~/test:/import/
+    env_file:
+      - .env

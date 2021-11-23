@@ -7,7 +7,7 @@
   "scripts": {
     "start": "eval $(cat .env) node src/index.js",
     "dev": "eval $(cat .env) nodemon src/index.js",
-    "up": "mkdir -p data && docker-compose up -d",
+    "up": "mkdir -p data/neo && docker-compose up -d",
     "stop": "docker-compose stop",
     "down": "docker-compose down"
   },

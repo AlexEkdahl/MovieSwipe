@@ -10,6 +10,7 @@ import styles from './styles'
 const SwipeScreen = () => {
   const [movies, setMovies] = useState([])
   const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(0)
 
   const refs = useMemo(
     () =>
@@ -20,16 +21,20 @@ const SwipeScreen = () => {
   )
 
   useEffect(() => {
-    if (!movies.length) {
-      setLoading(true)
-      fetchMovies()
+    const func = async () => {
+      if (!movies.length) {
+        setLoading(true)
+        await fetchMovies()
+      }
     }
+    func()
   }, [movies])
 
   const fetchMovies = async () => {
     setLoading(true)
-    const page = Math.floor(Math.random() * 500)
     const res = await getMovies({ page })
+    setPage(page + 1)
+
     setMovies(res.data.movies)
     setLoading(false)
   }
