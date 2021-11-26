@@ -10,10 +10,15 @@ export default class Movie extends NeoModel {
     this.imdb = JSON.parse(this.imdb).rating
   }
 
-  static async findNonRelated({ limit = 10, page = 0, uid, ...props } = {}) {
+  static async findNonRelatedMovies({
+    limit = 10,
+    page = 0,
+    uid,
+    ...props
+  } = {}) {
     const records = await cypher(
       `MATCH (m:${this.model || this.name} ${await getParams(props)})
-      WHERE NOT (m)-[]->(:User {id: $uid})
+      WHERE NOT (m)-[]-(:User {id: $uid})
       RETURN m SKIP ${page * limit} LIMIT ${limit}`,
       { ...props, uid }
     )
@@ -37,5 +42,16 @@ export default class Movie extends NeoModel {
       rec.imdb = JSON.parse(rec.imdb).rating
       return new this(rec)
     }) // return a NeoModel object with methods
+  }
+
+  static async likedMovies(props) {
+    const records = await cypher(
+      `MATCH (u:User {id: $id})-[:LIKES]-(m:Movie)
+      RETURN m
+      `,
+      props
+    )
+
+    return records
   }
 }

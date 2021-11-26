@@ -71,12 +71,13 @@ const SwipeScreen = () => {
         <Button
           style={styles.botton}
           onPress={() => swipe('left')}
-          title='<-'
+          title='X'
+          color='danger'
         />
         <Button
           style={styles.botton}
           onPress={() => swipe('right')}
-          title='->'
+          title='<3'
         />
       </View>
     </>

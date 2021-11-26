@@ -4,6 +4,7 @@ import { member } from '../../middleware/index.js'
 
 const router = express.Router()
 
-router.route('/').get(member, MoviesCtrl.apiGetMovies)
+router.route('/').get(member, MoviesCtrl.apiGetSwipeableMovies)
+router.route('/liked').get(member, MoviesCtrl.apiGetLikedMovies)
 
 export default router

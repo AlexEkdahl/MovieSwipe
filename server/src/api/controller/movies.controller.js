@@ -1,11 +1,11 @@
 import { Movie } from '../models/index.js'
 
-const apiGetMovies = async (req, res) => {
+const apiGetSwipeableMovies = async (req, res) => {
   const { page, limit } = req.query
   const uid = req.session.userId
 
   try {
-    const movies = await Movie.findNonRelated({ page, limit, uid })
+    const movies = await Movie.findNonRelatedMovies({ page, limit, uid })
     res.status(200).json({ movies })
   } catch (error) {
     console.error(error)
@@ -13,8 +13,20 @@ const apiGetMovies = async (req, res) => {
   }
 }
 
+const apiGetLikedMovies = async (req, res) => {
+  const id = req.session.userId
+  try {
+    const movies = await Movie.likedMovies({ id })
+    res.status(200).json(movies)
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ message: 'Something went wrong on server' })
+  }
+}
+
 const controller = {
-  apiGetMovies,
+  apiGetSwipeableMovies,
+  apiGetLikedMovies,
 }
 
 export default controller
