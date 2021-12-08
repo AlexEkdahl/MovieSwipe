@@ -10,6 +10,7 @@ import styles from './styles'
 const SwipeScreen = () => {
   const [movies, setMovies] = useState([])
   const [loading, setLoading] = useState(true)
+  const [showMatchModal, setMatchModal] = useState(false)
   const [page, setPage] = useState(0)
 
   const refs = useMemo(
@@ -45,6 +46,7 @@ const SwipeScreen = () => {
     })
     if (dir === 'right') {
       const res = await connectToMovie(id, 'likes')
+      if (res.data.message) console.log(res.data.friends)
     } else {
       const res = await connectToMovie(id, 'dislikes')
     }

@@ -102,61 +102,40 @@ export class NeoModel {
     })
   }
 
-  async populate(relations) {
-    if (!Array.isArray(relations))
-      throw 'Must provide an array of relations to populate'
-
-    relations.map((rel) => (this[rel] = []))
-
-    await Promise.all(
-      relations.map(async (rel) => {
-        const props = {
-          id: this.id,
-        }
-        const model = await cypher(
-          `
-        MATCH (:${this.model} {id: $id})-[:${rel}]->(m) RETURN m
-      `,
-          props
-        )
-
-        model[0] && this[rel].push(model[0])
-      })
-    )
-
-    return this
-  }
-
   async setRelation(nodeID, relation = 'RELTYPE') {
-    if (!nodeID) throw 'Must provide node to detach'
+    if (!nodeID) throw 'Must provide nodeId '
 
     await cypher(
       `
       MATCH (a:${this.model} {id: "${this.id}"})
       MATCH (b {id: $id})
       CREATE (a)-[r:${relation}]->(b)
+
+
       `,
       { id: nodeID }
     )
   }
 
-  async setRelation(nodeID, relation = 'RELTYPE') {
-    if (!nodeID) throw 'Must provide node to detach'
+  async isMatch(nodeID, relation = 'RELTYPE') {
+    if (!nodeID) throw 'Must provide node to match'
 
-    await cypher(
+    const response = await cypher(
       `
       MATCH (a:${this.model || this.name} {id: "${this.id}"})
-      MATCH (b {id: $id})
-      CREATE (a)-[r:${relation}]->(b)
+      -[:FRIENDS]-(f:User)
+      MATCH (b {id: $id})<-[r2:${relation}]-(f)
+      RETURN {properties:  {id:f.id, username: f.username}} as user
       `,
       { id: nodeID }
     )
+    return response.length > 0 ? response : false
   }
 
   static async relations({ rel, ...props }) {
     return await cypher(
       `
-      MATCH (:${this.model || this.name} {id: $id})-[:${rel}]->(m) RETURN m
+      MATCH (:${this.model || this.name} {id: $id})-[:${rel}]-(m) RETURN m
       `,
       props
     )

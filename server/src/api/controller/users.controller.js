@@ -59,12 +59,14 @@ const apiAddRelation = async (req, res) => {
   const id = userId ? userId : req.session.userId
   try {
     const user = await User.findOne({ id })
+    let matchedLike
     switch (type) {
       case 'dislikes':
         await user.setRelation(nodeId, RELATION_NAMES.DISLIKES)
         break
       case 'likes':
         await user.setRelation(nodeId, RELATION_NAMES.LIKES)
+        matchedLike = await user.isMatch(nodeId, RELATION_NAMES.LIKES)
         break
       case 'friends':
         await user.setRelation(nodeId, RELATION_NAMES.FRIENDS)
@@ -72,7 +74,8 @@ const apiAddRelation = async (req, res) => {
       default:
         throw new Error('Invalid relation type')
     }
-
+    if (matchedLike)
+      return res.status(200).json({ message: 'MATCH', friends: matchedLike })
     res.status(200).json({ message: `rel ${type}` })
   } catch (error) {
     console.error(error.message)
