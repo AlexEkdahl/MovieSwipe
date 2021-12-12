@@ -125,7 +125,7 @@ export class NeoModel {
       MATCH (a:${this.model || this.name} {id: "${this.id}"})
       -[:FRIENDS]-(f:User)
       MATCH (b {id: $id})<-[r2:${relation}]-(f)
-      RETURN {properties:  {id:f.id, username: f.username}} as user
+      RETURN {properties:  {id:f.id, username: f.username, movie: $id}} as data
       `,
       { id: nodeID }
     )

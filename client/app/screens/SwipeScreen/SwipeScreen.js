@@ -46,7 +46,7 @@ const SwipeScreen = () => {
     })
     if (dir === 'right') {
       const res = await connectToMovie(id, 'likes')
-      if (res.data.message) console.log(res.data.friends)
+      if (res.data.message === 'MATCH') console.log(res.data.friends)
     } else {
       const res = await connectToMovie(id, 'dislikes')
     }

@@ -4,6 +4,7 @@ import AccountScreen from '../screens/AccountScreen'
 import SearchUserScreen from '../screens/SearchUserScreen'
 import FriendsScreen from '../screens/FriendsScreen'
 import FriendProfileScreen from '../screens/FriendProfileScreen'
+import LikedMoviesScreen from '../screens/LikedMoviesScreen'
 
 const Stack = createStackNavigator()
 
@@ -18,6 +19,11 @@ const AccountNavigator = () => (
       options={{ headerShown: false }}
       name='SearchUser'
       component={SearchUserScreen}
+    />
+    <Stack.Screen
+      options={{ headerShown: false }}
+      name='LikedMovies'
+      component={LikedMoviesScreen}
     />
     <Stack.Screen
       options={{ headerShown: false }}

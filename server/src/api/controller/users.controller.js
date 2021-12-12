@@ -66,7 +66,7 @@ const apiAddRelation = async (req, res) => {
         break
       case 'likes':
         await user.setRelation(nodeId, RELATION_NAMES.LIKES)
-        matchedLike = await user.isMatch(nodeId, RELATION_NAMES.LIKES)
+        matchedLike = await Movie.isMatch(nodeId, RELATION_NAMES.LIKES)
         break
       case 'friends':
         await user.setRelation(nodeId, RELATION_NAMES.FRIENDS)

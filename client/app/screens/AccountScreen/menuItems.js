@@ -5,7 +5,7 @@ export default menuItems = [
   {
     title: 'Liked movies',
     icon: { name: 'movie-open', backgroundColor: colors.primary },
-    targetScreen: routes.SEARCH_USER,
+    targetScreen: routes.LIKED_MOVIES,
   },
   {
     title: 'Find movie',

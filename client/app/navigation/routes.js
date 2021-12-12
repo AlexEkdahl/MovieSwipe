@@ -6,4 +6,5 @@ export default Object.freeze({
   FRIENDS: 'Friends',
   FRIEND_PROFILE: 'FriendProfile',
   MOVIE_DETAILS: 'MovieDetails',
+  LIKED_MOVIES: 'LikedMovies',
 })
